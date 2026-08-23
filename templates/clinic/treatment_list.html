@@ -1,0 +1,38 @@
+{% extends 'app_base.html' %}
+{% block page_title %}Treatments{% endblock %}
+{% block page_subtitle %}Treatment records{% endblock %}
+
+{% block app_content %}
+<div class="card-app">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h6 class="fw-bold mb-0"><i class="bi bi-clipboard2-heart text-gradient"></i> All Treatments</h6>
+    {% if not user.is_patient %}<a href="{% url 'clinic:treatment_create' %}" class="btn-app"><i class="bi bi-plus-lg"></i> New Treatment</a>{% endif %}
+  </div>
+  <div class="table-responsive">
+    <table class="table-app">
+      <thead><tr><th>Service</th><th>Patient</th><th>Dentist</th><th>Tooth</th><th>Date</th><th>Cost</th><th>Status</th>{% if not user.is_patient %}<th class="text-end">Actions</th>{% endif %}</tr></thead>
+      <tbody>
+        {% for t in treatments %}
+        <tr>
+          <td class="fw-bold">{{ t.service.name|default:"Treatment" }}</td>
+          <td>{{ t.patient.display_name }}</td>
+          <td>{% if t.dentist %}Dr. {{ t.dentist.display_name }}{% else %}—{% endif %}</td>
+          <td>{% if t.tooth_number %}#{{ t.tooth_number }}{% else %}—{% endif %}</td>
+          <td>{{ t.date|date:"d M Y" }}</td>
+          <td class="fw-bold">₹{{ t.cost }}</td>
+          <td>{% if t.is_completed %}<span class="badge-app badge-success">Completed</span>{% else %}<span class="badge-app badge-warning">Ongoing</span>{% endif %}</td>
+          {% if not user.is_patient %}
+          <td class="text-end">
+            <a href="{% url 'clinic:treatment_update' t.pk %}" class="btn-soft"><i class="bi bi-pencil"></i></a>
+            {% if user.is_admin or user.is_dentist %}<a href="{% url 'clinic:treatment_delete' t.pk %}" class="btn-soft"><i class="bi bi-trash3"></i></a>{% endif %}
+          </td>
+          {% endif %}
+        </tr>
+        {% empty %}
+        <tr><td colspan="8" class="text-center py-5 muted"><i class="bi bi-clipboard-x fs-1 d-block mb-2"></i>No treatments recorded.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

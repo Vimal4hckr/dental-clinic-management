@@ -1,0 +1,67 @@
+{% extends 'app_base.html' %}
+{% load clinic_extras %}
+{% block page_title %}Invoice {{ invoice.number }}{% endblock %}
+
+{% block app_content %}
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="card-app">
+      <div class="d-flex justify-content-between align-items-start border-bottom pb-3 mb-3">
+        <div class="d-flex align-items-center gap-2">
+          <span class="brand-badge"><i class="bi bi-hospital"></i></span>
+          <div><h5 class="fw-bold mb-0">DentaCare Clinic</h5><div class="muted small">Smile Street, Dental City</div></div>
+        </div>
+        <div class="text-end">
+          <div class="fw-bold fs-5">{{ invoice.number }}</div>
+          <span class="badge-app badge-{{ invoice.status_color }}">{{ invoice.get_status_display }}</span>
+        </div>
+      </div>
+      <div class="row g-3 mb-3">
+        <div class="col-md-6"><div class="muted small">Billed To</div><div class="fw-bold">{{ invoice.patient.display_name }}</div><div class="muted small">{{ invoice.patient.email }}</div></div>
+        <div class="col-md-6 text-md-end"><div class="muted small">Issued</div><div class="fw-bold">{{ invoice.issued_date|date:"d M Y" }}</div>{% if invoice.due_date %}<div class="muted small">Due {{ invoice.due_date|date:"d M Y" }}</div>{% endif %}</div>
+      </div>
+      <table class="table-app">
+        <thead><tr><th>Description</th><th>Qty</th><th>Unit Price</th><th class="text-end">Total</th></tr></thead>
+        <tbody>
+          {% for item in invoice.items.all %}
+          <tr><td>{{ item.description }}</td><td>{{ item.quantity }}</td><td>{{ item.unit_price|currency }}</td><td class="text-end fw-bold">{{ item.line_total|currency }}</td></tr>
+          {% empty %}<tr><td colspan="4" class="muted text-center">No items</td></tr>{% endfor %}
+        </tbody>
+      </table>
+      <div class="d-flex justify-content-end mt-3">
+        <div style="min-width:260px;">
+          <div class="d-flex justify-content-between py-1"><span class="muted">Subtotal</span><span>{{ invoice.subtotal|currency }}</span></div>
+          <div class="d-flex justify-content-between py-1"><span class="muted">Tax ({{ invoice.tax_percent }}%)</span><span>{{ invoice.tax_amount|currency }}</span></div>
+          <div class="d-flex justify-content-between py-1"><span class="muted">Discount</span><span>- {{ invoice.discount|currency }}</span></div>
+          <div class="d-flex justify-content-between py-2 border-top fw-bold fs-5"><span>Total</span><span class="text-gradient">{{ invoice.total|currency }}</span></div>
+          <div class="d-flex justify-content-between py-1"><span class="muted">Paid</span><span class="text-success">{{ invoice.amount_paid|currency }}</span></div>
+          <div class="d-flex justify-content-between py-1 fw-bold"><span>Balance</span><span class="text-danger">{{ invoice.balance|currency }}</span></div>
+        </div>
+      </div>
+      <button class="btn-ghost mt-3" onclick="window.print()"><i class="bi bi-printer"></i> Print Invoice</button>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card-app mb-4">
+      <h6 class="fw-bold mb-3"><i class="bi bi-cash-coin text-gradient"></i> Payments</h6>
+      {% for p in invoice.payments.all %}
+      <div class="d-flex justify-content-between py-2 border-bottom small"><div><div class="fw-bold">{{ p.amount|currency }}</div><div class="muted">{{ p.get_method_display }} · {{ p.paid_on|date:"d M" }}</div></div><i class="bi bi-check-circle-fill text-success"></i></div>
+      {% empty %}<p class="muted small">No payments recorded.</p>{% endfor %}
+    </div>
+    {% if user.is_admin or user.is_receptionist %}
+    {% if invoice.balance > 0 %}
+    <div class="card-app">
+      <h6 class="fw-bold mb-3"><i class="bi bi-plus-circle text-gradient"></i> Record Payment</h6>
+      <form method="post" action="{% url 'clinic:invoice_add_payment' invoice.pk %}">
+        {% csrf_token %}
+        {% include 'partials/_form.html' with form=payment_form %}
+        <button class="btn-app w-100 justify-content-center" type="submit"><i class="bi bi-check2"></i> Add Payment</button>
+      </form>
+    </div>
+    {% else %}
+    <div class="card-app text-center"><i class="bi bi-check-circle-fill text-success fs-1"></i><p class="fw-bold mt-2 mb-0">Fully Paid</p></div>
+    {% endif %}
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

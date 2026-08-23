@@ -1,0 +1,33 @@
+{% extends 'app_base.html' %}
+{% block page_title %}Patients{% endblock %}
+{% block page_subtitle %}Your patient directory{% endblock %}
+
+{% block app_content %}
+<div class="card-app">
+  <form method="get" class="d-flex gap-2 mb-3">
+    <input class="form-control-app" name="q" value="{{ search }}" placeholder="Search by name or email..." style="max-width:320px;">
+    <button class="btn-ghost" type="submit"><i class="bi bi-search"></i></button>
+  </form>
+  <div class="grid-cards cols-3">
+    {% for p in patients %}
+    <a href="{% url 'clinic:patient_detail' p.pk %}" class="feature-card text-decoration-none">
+      <div class="d-flex align-items-center gap-3">
+        <div class="avatar avatar-lg" style="width:56px;height:56px;font-size:1.2rem;">
+          {% if p.avatar %}<img src="{{ p.avatar.url }}">{% else %}{{ p.initials }}{% endif %}
+        </div>
+        <div>
+          <h6 class="fw-bold mb-0 text-dark">{{ p.display_name }}</h6>
+          <div class="muted small">{% if p.patient_profile %}{{ p.patient_profile.patient_code }}{% endif %}</div>
+        </div>
+      </div>
+      <div class="mt-3 small muted">
+        <div><i class="bi bi-envelope me-2"></i>{{ p.email|default:"—" }}</div>
+        <div><i class="bi bi-telephone me-2"></i>{{ p.phone }}</div>
+      </div>
+    </a>
+    {% empty %}
+    <p class="muted">No patients found.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'app_base.html' %}
+{% block page_title %}Appointments{% endblock %}
+{% block page_subtitle %}Manage all appointments{% endblock %}
+
+{% block app_content %}
+<div class="card-app">
+  <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3">
+    <form method="get" class="d-flex gap-2 flex-wrap">
+      <input class="form-control-app" name="q" value="{{ search }}" placeholder="Search patient / reason..." style="max-width:240px;">
+      <select name="status" class="form-control-app select-app" style="max-width:180px;" onchange="this.form.submit()">
+        <option value="">All statuses</option>
+        {% for value, label in statuses %}
+        <option value="{{ value }}" {% if current_status == value %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+      <button class="btn-ghost" type="submit"><i class="bi bi-search"></i></button>
+    </form>
+    <a href="{% url 'clinic:appointment_create' %}" class="btn-app"><i class="bi bi-plus-lg"></i> New Appointment</a>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table-app">
+      <thead><tr><th>Patient</th><th>Dentist</th><th>Service</th><th>Date & Time</th><th>Risk</th><th>Status</th><th class="text-end">Actions</th></tr></thead>
+      <tbody>
+        {% for a in appointments %}
+        <tr>
+          <td><div class="d-flex align-items-center gap-2"><div class="avatar" style="width:32px;height:32px;font-size:.72rem;">{{ a.patient.initials }}</div><div><div class="fw-bold small">{{ a.patient.display_name }}</div><div class="muted" style="font-size:.72rem;">{{ a.patient.phone }}</div></div></div></td>
+          <td>{% if a.dentist %}Dr. {{ a.dentist.display_name }}{% else %}<span class="muted">Unassigned</span>{% endif %}</td>
+          <td>{{ a.service.name|default:"—" }}</td>
+          <td>{{ a.date|date:"d M Y" }}<div class="muted small">{{ a.time|time:"g:i A" }}</div></td>
+          <td>{% if a.no_show_risk >= 66 %}<span class="badge-app badge-danger">{{ a.no_show_risk }}%</span>{% elif a.no_show_risk >= 40 %}<span class="badge-app badge-warning">{{ a.no_show_risk }}%</span>{% else %}<span class="badge-app badge-success">{{ a.no_show_risk }}%</span>{% endif %}</td>
+          <td><span class="badge-app badge-{{ a.status_color }}">{{ a.get_status_display }}</span></td>
+          <td class="text-end">
+            <a href="{% url 'clinic:appointment_detail' a.pk %}" class="btn-soft" title="View"><i class="bi bi-eye"></i></a>
+            {% if user.is_admin or user.is_dentist or user.is_receptionist %}
+            <a href="{% url 'clinic:appointment_update' a.pk %}" class="btn-soft" title="Edit"><i class="bi bi-pencil"></i></a>
+            <a href="{% url 'clinic:appointment_delete' a.pk %}" class="btn-soft" title="Delete"><i class="bi bi-trash3"></i></a>
+            {% else %}
+            <a href="{% url 'clinic:appointment_cancel' a.pk %}" class="btn-soft" title="Cancel"><i class="bi bi-x-lg"></i></a>
+            {% endif %}
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="7" class="text-center py-5 muted"><i class="bi bi-calendar-x fs-1 d-block mb-2"></i>No appointments found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

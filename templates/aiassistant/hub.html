@@ -1,0 +1,32 @@
+{% extends 'app_base.html' %}
+{% block page_title %}AI Assistant Hub{% endblock %}
+{% block page_subtitle %}Smart dental tools — no API key needed{% endblock %}
+
+{% block app_content %}
+<div class="grid-cards cols-3">
+  <a href="{% url 'aiassistant:symptom_checker' %}" class="feature-card text-decoration-none">
+    <div class="feature-icon"><i class="bi bi-heart-pulse"></i></div>
+    <h5 class="fw-bold text-dark">Symptom Checker</h5>
+    <p class="muted mb-0">Describe your symptoms and get instant guidance on possible conditions, urgency and the right service.</p>
+  </a>
+  <a href="{% url 'aiassistant:cost_estimator' %}" class="feature-card text-decoration-none">
+    <div class="feature-icon"><i class="bi bi-calculator"></i></div>
+    <h5 class="fw-bold text-dark">Cost Estimator</h5>
+    <p class="muted mb-0">Get a tailored price range for any treatment based on complexity, teeth count and insurance.</p>
+  </a>
+  <a href="{% url 'aiassistant:chatbot' %}" class="feature-card text-decoration-none">
+    <div class="feature-icon"><i class="bi bi-chat-dots"></i></div>
+    <h5 class="fw-bold text-dark">DentaBot Chat</h5>
+    <p class="muted mb-0">Ask about appointments, timings, pricing and services — 24/7 instant answers.</p>
+  </a>
+</div>
+<div class="card-app mt-4">
+  <div class="d-flex align-items-center gap-3">
+    <i class="bi bi-shield-lock text-gradient fs-1"></i>
+    <div>
+      <h6 class="fw-bold mb-1">100% offline & private</h6>
+      <p class="muted mb-0 small">All AI tools run on transparent, rule-based logic built into the app — no external API keys, no data leaves your server.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

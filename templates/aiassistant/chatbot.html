@@ -1,0 +1,76 @@
+{% extends 'public_base.html' %}
+{% block title %}DentaBot · DentaCare{% endblock %}
+
+{% block public_content %}
+<section class="section" style="padding-top:3rem;">
+  <div class="container">
+    <div class="text-center mb-4">
+      <span class="pill mb-2"><i class="bi bi-chat-dots"></i> 24/7 Assistant</span>
+      <h1 class="section-title">Chat with DentaBot 🦷</h1>
+      <p class="muted">Ask about appointments, services, timings, pricing and more.</p>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-lg-7">
+        <div class="card-app">
+          <div class="chat-window" id="chatWindow">
+            <div class="chat-msg bot">Hi! I'm <b>DentaBot</b> 🦷 — your virtual dental assistant. How can I help you today?</div>
+          </div>
+          <form id="chatForm" class="d-flex gap-2 mt-3">
+            <input id="chatInput" class="form-control-app" placeholder="Type your message..." autocomplete="off" required>
+            <button class="btn-app" type="submit"><i class="bi bi-send"></i></button>
+          </form>
+          <div class="d-flex flex-wrap gap-2 mt-3">
+            <button class="badge-app badge-secondary border-0 quick" type="button">Book an appointment</button>
+            <button class="badge-app badge-secondary border-0 quick" type="button">What are your timings?</button>
+            <button class="badge-app badge-secondary border-0 quick" type="button">How much is whitening?</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const win = document.getElementById('chatWindow');
+  const form = document.getElementById('chatForm');
+  const input = document.getElementById('chatInput');
+  const csrftoken = '{{ csrf_token }}';
+
+  function addMsg(text, who) {
+    const div = document.createElement('div');
+    div.className = 'chat-msg ' + who;
+    div.innerHTML = text;
+    win.appendChild(div);
+    win.scrollTop = win.scrollHeight;
+  }
+
+  async function send(message) {
+    addMsg(message, 'user');
+    const body = new URLSearchParams({ message });
+    try {
+      const res = await fetch("{% url 'aiassistant:chatbot_api' %}", {
+        method: 'POST',
+        headers: { 'X-CSRFToken': csrftoken, 'Content-Type': 'application/x-www-form-urlencoded' },
+        body,
+      });
+      const data = await res.json();
+      setTimeout(() => addMsg(data.reply, 'bot'), 300);
+    } catch (e) {
+      addMsg('Sorry, something went wrong. Please try again.', 'bot');
+    }
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const msg = input.value.trim();
+    if (!msg) return;
+    send(msg);
+    input.value = '';
+  });
+
+  document.querySelectorAll('.quick').forEach(b =>
+    b.addEventListener('click', () => send(b.textContent)));
+</script>
+{% endblock %}

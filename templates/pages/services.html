@@ -1,0 +1,54 @@
+{% extends 'public_base.html' %}
+{% load static %}
+{% block title %}Services · DentaCare{% endblock %}
+
+{% block public_content %}
+<section class="hero" style="padding:3.5rem 0;">
+  <div class="container text-center">
+    <span class="pill mb-2"><i class="bi bi-clipboard2-pulse"></i> Our Services</span>
+    <h1>Complete <span class="text-gradient">dental care</span> under one roof</h1>
+    <p class="lead mx-auto mt-3">Transparent pricing, expert dentists and a comfortable experience for every treatment.</p>
+  </div>
+</section>
+
+<section class="section" style="padding-top:1rem;">
+  <div class="container">
+    <div class="row g-4">
+      {% for service in services %}
+      <div class="col-md-6 col-lg-4">
+        <div class="service-card h-100">
+          <div class="d-flex align-items-center gap-3 mb-2">
+            <div class="feature-icon mb-0"><i class="bi {{ service.icon }}"></i></div>
+            <div>
+              <h5 class="fw-bold mb-0">{{ service.name }}</h5>
+              <span class="badge-app badge-info"><i class="bi bi-clock"></i> {{ service.duration_minutes }} min</span>
+            </div>
+          </div>
+          <p class="muted small">{{ service.description }}</p>
+          <div class="d-flex justify-content-between align-items-center mt-auto pt-3 border-top">
+            <span class="fw-bold text-gradient fs-4">₹{{ service.price }}</span>
+            <a href="{% url 'accounts:signup' %}" class="btn-soft">Book <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <p class="muted text-center">No services yet. Run the seed command to populate demo data.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="row g-4 align-items-center card-app">
+      <div class="col-md-8">
+        <h3 class="fw-bold mb-1"><i class="bi bi-calculator text-gradient"></i> Not sure about the cost?</h3>
+        <p class="muted mb-0">Use our AI Cost Estimator to get an instant, tailored price range for any treatment.</p>
+      </div>
+      <div class="col-md-4 text-md-end">
+        <a href="{% url 'aiassistant:cost_estimator' %}" class="btn-app"><i class="bi bi-robot"></i> Estimate Cost</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

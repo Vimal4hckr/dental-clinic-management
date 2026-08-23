@@ -1,0 +1,20 @@
+{% extends 'app_base.html' %}
+{% block page_title %}{{ title }}{% endblock %}
+
+{% block app_content %}
+<div class="row justify-content-center">
+  <div class="col-lg-7">
+    <div class="card-app">
+      <h5 class="fw-bold mb-3"><i class="bi {{ resource.icon }} text-gradient"></i> {{ title }}</h5>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% include 'partials/_form.html' with form=form %}
+        <div class="d-flex gap-2">
+          <button class="btn-app" type="submit"><i class="bi bi-check2"></i> Save</button>
+          <a href="{% url 'manage_panel:resource_list' slug=resource.slug %}" class="btn-ghost"><i class="bi bi-arrow-left"></i> Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

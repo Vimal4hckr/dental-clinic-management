@@ -1,0 +1,59 @@
+{% extends 'public_base.html' %}
+{% block title %}AI Symptom Checker · DentaCare{% endblock %}
+
+{% block public_content %}
+<section class="section" style="padding-top:3rem;">
+  <div class="container">
+    <div class="text-center mb-4">
+      <span class="pill mb-2"><i class="bi bi-robot"></i> AI Powered</span>
+      <h1 class="section-title">Dental Symptom Checker</h1>
+      <p class="muted">Describe what you're feeling and get instant, private guidance. Not a medical diagnosis.</p>
+    </div>
+    <div class="row justify-content-center g-4">
+      <div class="col-lg-6">
+        <div class="card-app">
+          <form method="post">
+            {% csrf_token %}
+            <label class="form-label-app"><i class="bi bi-chat-left-text"></i> Your symptoms</label>
+            <textarea class="form-control-app" name="symptoms" rows="5" placeholder="e.g. My gums are bleeding and swollen when I brush, and one tooth is sensitive to cold...">{{ symptoms }}</textarea>
+            <button class="btn-app w-100 justify-content-center mt-3" type="submit"><i class="bi bi-search-heart"></i> Analyze Symptoms</button>
+          </form>
+          <div class="mt-3 d-flex flex-wrap gap-2">
+            <span class="badge-app badge-secondary">bleeding gums</span>
+            <span class="badge-app badge-secondary">tooth sensitivity</span>
+            <span class="badge-app badge-secondary">severe pain</span>
+            <span class="badge-app badge-secondary">broken tooth</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        {% if result %}
+        <div class="card-app">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h5 class="fw-bold mb-0">Assessment</h5>
+            <span class="badge-app {% if result.urgency == 'High' %}badge-danger{% elif result.urgency == 'Medium' %}badge-warning{% else %}badge-success{% endif %}">{{ result.urgency }} Urgency</span>
+          </div>
+          <div class="mb-3">
+            <div class="d-flex justify-content-between small muted"><span>Urgency level</span><span>{{ result.urgency_score }}%</span></div>
+            <div style="height:10px;background:#eef2f7;border-radius:999px;overflow:hidden;"><div style="height:100%;width:{{ result.urgency_score }}%;background:var(--gradient);"></div></div>
+          </div>
+          <div class="mb-3"><div class="muted small">Possible condition</div><div class="fw-bold fs-5">{{ result.condition }}</div></div>
+          <div class="mb-3"><div class="muted small">Recommended</div><span class="badge-app badge-info"><i class="bi bi-clipboard2-pulse"></i> {{ result.service }}</span></div>
+          <div class="p-3" style="background:#f8fafc;border-radius:12px;"><i class="bi bi-lightbulb text-warning"></i> {{ result.advice }}</div>
+          {% if result.alternatives %}
+          <div class="mt-3"><div class="muted small">Other possibilities</div>{% for alt in result.alternatives %}<span class="badge-app badge-secondary me-1">{{ alt }}</span>{% endfor %}</div>
+          {% endif %}
+          <a href="{% if user.is_authenticated %}{% url 'clinic:appointment_create' %}{% else %}{% url 'accounts:signup' %}{% endif %}" class="btn-app w-100 justify-content-center mt-3"><i class="bi bi-calendar-plus"></i> Book Appointment</a>
+        </div>
+        {% else %}
+        <div class="card-app text-center h-100 d-flex flex-column justify-content-center">
+          <i class="bi bi-clipboard2-heart text-gradient" style="font-size:3.5rem;"></i>
+          <p class="muted mt-3 mb-0">Your assessment will appear here once you describe your symptoms.</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <p class="text-center muted small mt-4"><i class="bi bi-info-circle"></i> This tool provides general guidance only and is not a substitute for professional dental advice.</p>
+  </div>
+</section>
+{% endblock %}

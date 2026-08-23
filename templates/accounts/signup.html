@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Sign Up · DentaCare{% endblock %}
+
+{% block body %}
+<div class="auth-wrap">
+  <div class="auth-side">
+    <img src="{% static 'img/dc_tooth3d.png' %}" alt="" class="tooth-deco">
+    <a href="{% url 'pages:home' %}" class="d-flex align-items-center gap-2 text-white mb-5 text-decoration-none">
+      <span class="brand-badge" style="background:rgba(255,255,255,.2)"><i class="bi bi-hospital"></i></span>
+      <span class="brand text-white">DentaCare</span>
+    </a>
+    <h1 class="fw-bold display-6">Start your journey to a healthier smile.</h1>
+    <p class="mt-3" style="opacity:.9; max-width:420px;">Create a free patient account to book appointments and access AI dental tools in seconds.</p>
+    <div class="mt-4 d-flex flex-column gap-2">
+      <div><i class="bi bi-emoji-smile-fill me-2"></i> Free forever for patients</div>
+      <div><i class="bi bi-calendar2-check-fill me-2"></i> Book 24/7, anytime</div>
+      <div><i class="bi bi-robot me-2"></i> Instant AI symptom guidance</div>
+    </div>
+  </div>
+  <div class="auth-form">
+    <div class="auth-card">
+      <div class="text-center mb-4">
+        <span class="brand-badge mx-auto mb-2"><i class="bi bi-person-plus"></i></span>
+        <h3 class="fw-bold">Create your account</h3>
+        <p class="muted">Join DentaCare as a patient</p>
+      </div>
+      <form method="post">
+        {% csrf_token %}
+        {% include 'partials/_form.html' with form=form %}
+        <button class="btn-app w-100 justify-content-center" type="submit"><i class="bi bi-person-check"></i> Create Account</button>
+      </form>
+      <p class="text-center muted mt-3">Already registered? <a href="{% url 'accounts:login' %}" class="fw-bold">Login</a></p>
+    </div>
+  </div>
+</div>
+{% endblock %}

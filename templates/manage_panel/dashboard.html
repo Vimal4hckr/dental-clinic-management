@@ -1,0 +1,93 @@
+{% extends 'app_base.html' %}
+{% load clinic_extras static %}
+{% block page_title %}Admin Console{% endblock %}
+{% block page_subtitle %}Full control over your clinic{% endblock %}
+
+{% block app_content %}
+<div class="dash-hero">
+  <img src="{% static 'img/dc_tooth3d.png' %}" alt="" class="tooth-deco">
+  <div class="ring-deco"></div>
+  <div style="position:relative; z-index:2;">
+    <div class="d-flex align-items-center gap-2 mb-1"><i class="bi bi-shield-lock-fill"></i><span style="opacity:.9; font-weight:700;">Administrator</span></div>
+    <h3>Clinic Command Center</h3>
+    <div class="sub mt-1">Live performance across patients, revenue, staff and operations.</div>
+    <div class="mt-3 d-flex flex-wrap gap-2">
+      <a href="{% url 'manage_panel:user_create' %}" class="btn-ghost" style="background:rgba(255,255,255,.15); color:#fff; border-color:rgba(255,255,255,.4);"><i class="bi bi-person-plus"></i> Add User</a>
+      <a href="{% url 'manage_panel:reports' %}" class="btn-ghost" style="background:rgba(255,255,255,.15); color:#fff; border-color:rgba(255,255,255,.4);"><i class="bi bi-graph-up-arrow"></i> Reports</a>
+      <a href="{% url 'manage_panel:resource_list' slug='services' %}" class="btn-ghost" style="background:rgba(255,255,255,.15); color:#fff; border-color:rgba(255,255,255,.4);"><i class="bi bi-clipboard2-pulse"></i> Services</a>
+    </div>
+  </div>
+</div>
+
+<div class="grid-cards cols-4 mb-4">
+  <div class="card-app stat-card"><div class="d-flex justify-content-between"><div><div class="label">Total Patients</div><div class="value">{{ kpis.total_patients }}</div><div class="trend text-success"><i class="bi bi-arrow-up"></i> active</div></div><div class="icon"><i class="bi bi-people"></i></div></div></div>
+  <div class="card-app stat-card"><div class="d-flex justify-content-between"><div><div class="label">Appointments</div><div class="value">{{ kpis.total_appointments }}</div><div class="trend muted">{{ kpis.appointments_today }} today</div></div><div class="icon"><i class="bi bi-calendar2-week"></i></div></div></div>
+  <div class="card-app stat-card"><div class="d-flex justify-content-between"><div><div class="label">Revenue</div><div class="value">{{ kpis.total_revenue|currency }}</div><div class="trend text-danger">{{ kpis.outstanding|currency }} due</div></div><div class="icon"><i class="bi bi-cash-coin"></i></div></div></div>
+  <div class="card-app stat-card"><div class="d-flex justify-content-between"><div><div class="label">Treatments</div><div class="value">{{ kpis.total_treatments }}</div><div class="trend muted">{{ kpis.total_dentists }} dentists</div></div><div class="icon"><i class="bi bi-clipboard2-heart"></i></div></div></div>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-lg-8"><div class="card-app"><h6 class="fw-bold mb-3"><i class="bi bi-cash-coin text-gradient"></i> Revenue Trend</h6><div style="height:300px;"><canvas id="revChart"></canvas></div></div></div>
+  <div class="col-lg-4"><div class="card-app"><h6 class="fw-bold mb-3"><i class="bi bi-people text-gradient"></i> Patient Growth</h6><div style="height:300px;"><canvas id="growthChart"></canvas></div></div></div>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-lg-4"><div class="card-app"><h6 class="fw-bold mb-3"><i class="bi bi-pie-chart text-gradient"></i> Appointment Status</h6><div style="height:260px;"><canvas id="statusChart"></canvas></div></div></div>
+  <div class="col-lg-4"><div class="card-app"><h6 class="fw-bold mb-3"><i class="bi bi-diagram-3 text-gradient"></i> Treatment Mix</h6><div style="height:260px;"><canvas id="treatChart"></canvas></div></div></div>
+  <div class="col-lg-4"><div class="card-app"><h6 class="fw-bold mb-3"><i class="bi bi-bar-chart text-gradient"></i> Appointments / Month</h6><div style="height:260px;"><canvas id="apptsChart"></canvas></div></div></div>
+</div>
+
+<!-- Quick manage -->
+<div class="card-app mb-4">
+  <h6 class="fw-bold mb-3"><i class="bi bi-sliders text-gradient"></i> Manage</h6>
+  <div class="grid-cards cols-4">
+    <a href="{% url 'manage_panel:user_list' %}" class="feature-card text-decoration-none"><div class="feature-icon"><i class="bi bi-person-badge"></i></div><h6 class="fw-bold mb-0 text-dark">Users & Roles</h6><span class="muted small">Add / edit / delete</span></a>
+    {% for res in resources %}
+    <a href="{% url 'manage_panel:resource_list' slug=res.slug %}" class="feature-card text-decoration-none"><div class="feature-icon"><i class="bi {{ res.icon }}"></i></div><h6 class="fw-bold mb-0 text-dark">{{ res.label_plural }}</h6><span class="muted small">{{ res.count }} records</span></a>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-7">
+    <div class="card-app">
+      <div class="d-flex justify-content-between align-items-center mb-3"><h6 class="fw-bold mb-0"><i class="bi bi-clock-history text-gradient"></i> Recent Appointments</h6><a href="{% url 'clinic:appointment_list' %}" class="btn-soft">All</a></div>
+      <table class="table-app">
+        <thead><tr><th>Patient</th><th>Dentist</th><th>Date</th><th>Status</th></tr></thead>
+        <tbody>
+          {% for a in recent_appointments %}
+          <tr><td>{{ a.patient.display_name }}</td><td>{% if a.dentist %}Dr. {{ a.dentist.display_name }}{% else %}—{% endif %}</td><td>{{ a.date|date:"d M Y" }}</td><td><span class="badge-app badge-{{ a.status_color }}">{{ a.get_status_display }}</span></td></tr>
+          {% empty %}<tr><td colspan="4" class="muted text-center py-3">No data</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="card-app">
+      <div class="d-flex justify-content-between align-items-center mb-3"><h6 class="fw-bold mb-0"><i class="bi bi-receipt text-gradient"></i> Recent Invoices</h6><a href="{% url 'clinic:invoice_list' %}" class="btn-soft">All</a></div>
+      {% for inv in recent_invoices %}
+      <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+        <div><div class="fw-bold small">{{ inv.number }}</div><div class="muted" style="font-size:.75rem;">{{ inv.patient.display_name }}</div></div>
+        <div class="text-end"><div class="fw-bold">{{ inv.total|currency }}</div><span class="badge-app badge-{{ inv.status_color }}">{{ inv.get_status_display }}</span></div>
+      </div>
+      {% empty %}<p class="muted small">No invoices yet.</p>{% endfor %}
+    </div>
+  </div>
+</div>
+
+<script id="revData" type="application/json">{{ revenue_json|safe }}</script>
+<script id="growthData" type="application/json">{{ growth_json|safe }}</script>
+<script id="statusData" type="application/json">{{ status_json|safe }}</script>
+<script id="treatData" type="application/json">{{ treatment_json|safe }}</script>
+<script id="apptsData" type="application/json">{{ appts_month_json|safe }}</script>
+{% endblock %}
+
+{% block app_scripts %}
+<script>
+  lineChart('revChart', 'revData', 'Revenue');
+  lineChart('growthChart', 'growthData', 'Patients');
+  doughnutChart('statusChart', 'statusData');
+  doughnutChart('treatChart', 'treatData');
+  barChart('apptsChart', 'apptsData', 'Appointments');
+</script>
+{% endblock %}

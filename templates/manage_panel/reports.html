@@ -1,0 +1,45 @@
+{% extends 'app_base.html' %}
+{% load clinic_extras %}
+{% block page_title %}Reports & Analytics{% endblock %}
+{% block page_subtitle %}Deep insights into your clinic{% endblock %}
+
+{% block app_content %}
+<div class="grid-cards cols-4 mb-4">
+  <div class="card-app stat-card"><div class="d-flex justify-content-between"><div><div class="label">Revenue</div><div class="value">{{ kpis.total_revenue|currency }}</div></div><div class="icon"><i class="bi bi-cash-coin"></i></div></div></div>
+  <div class="card-app stat-card"><div class="d-flex justify-content-between"><div><div class="label">Outstanding</div><div class="value">{{ kpis.outstanding|currency }}</div></div><div class="icon"><i class="bi bi-wallet2"></i></div></div></div>
+  <div class="card-app stat-card"><div class="d-flex justify-content-between"><div><div class="label">Treatments</div><div class="value">{{ kpis.total_treatments }}</div></div><div class="icon"><i class="bi bi-clipboard2-heart"></i></div></div></div>
+  <div class="card-app stat-card"><div class="d-flex justify-content-between"><div><div class="label">Prescriptions</div><div class="value">{{ total_prescriptions }}</div></div><div class="icon"><i class="bi bi-capsule"></i></div></div></div>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-lg-6"><div class="card-app"><h6 class="fw-bold mb-3"><i class="bi bi-cash-coin text-gradient"></i> Revenue Trend</h6><div style="height:300px;"><canvas id="revChart"></canvas></div></div></div>
+  <div class="col-lg-6"><div class="card-app"><h6 class="fw-bold mb-3"><i class="bi bi-people text-gradient"></i> Patient Growth</h6><div style="height:300px;"><canvas id="growthChart"></canvas></div></div></div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-4"><div class="card-app"><h6 class="fw-bold mb-3"><i class="bi bi-pie-chart text-gradient"></i> Appointment Status</h6><div style="height:260px;"><canvas id="statusChart"></canvas></div></div></div>
+  <div class="col-lg-4"><div class="card-app"><h6 class="fw-bold mb-3"><i class="bi bi-diagram-3 text-gradient"></i> Treatment Mix</h6><div style="height:260px;"><canvas id="treatChart"></canvas></div></div></div>
+  <div class="col-lg-4">
+    <div class="card-app">
+      <h6 class="fw-bold mb-3"><i class="bi bi-trophy text-gradient"></i> Top Services</h6>
+      {% for s in top_services %}
+      <div class="d-flex justify-content-between py-2 border-bottom small"><span class="fw-bold">{{ s.service__name|default:"Other" }}</span><span class="badge-app badge-info">{{ s.count }}</span></div>
+      {% empty %}<p class="muted small">No treatment data yet.</p>{% endfor %}
+    </div>
+  </div>
+</div>
+
+<script id="revData" type="application/json">{{ revenue_json|safe }}</script>
+<script id="growthData" type="application/json">{{ growth_json|safe }}</script>
+<script id="statusData" type="application/json">{{ status_json|safe }}</script>
+<script id="treatData" type="application/json">{{ treatment_json|safe }}</script>
+{% endblock %}
+
+{% block app_scripts %}
+<script>
+  lineChart('revChart', 'revData', 'Revenue');
+  lineChart('growthChart', 'growthData', 'Patients');
+  doughnutChart('statusChart', 'statusData');
+  doughnutChart('treatChart', 'treatData');
+</script>
+{% endblock %}

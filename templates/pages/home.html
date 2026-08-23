@@ -1,0 +1,237 @@
+{% extends 'public_base.html' %}
+{% load static %}
+{% block title %}DentaCare · Advanced Dental Clinic & Management{% endblock %}
+
+{% block public_content %}
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6 animate-rise">
+        <span class="pill mb-3"><i class="bi bi-patch-check-fill"></i> Trusted by 10,000+ smiles</span>
+        <h1>Advanced dental care,<br><span class="text-gradient">powered by technology.</span></h1>
+        <p class="lead mt-3">From digital X-rays and 3D scanners to painless treatments — DentaCare brings world-class dentistry and smart clinic management together in one place.</p>
+        <div class="d-flex flex-wrap gap-2 mt-4">
+          <a href="{% url 'accounts:signup' %}" class="btn-app"><i class="bi bi-calendar-plus"></i> Book Appointment</a>
+          <a href="{% url 'aiassistant:symptom_checker' %}" class="btn-ghost"><i class="bi bi-robot"></i> AI Symptom Checker</a>
+        </div>
+        <div class="d-flex flex-wrap gap-4 mt-4">
+          <div class="d-flex align-items-center gap-2"><i class="bi bi-shield-fill-check fs-4 text-gradient"></i><div><div class="fw-bold">Certified</div><div class="muted small">Expert dentists</div></div></div>
+          <div class="d-flex align-items-center gap-2"><i class="bi bi-emoji-smile-fill fs-4 text-gradient"></i><div><div class="fw-bold">Painless</div><div class="muted small">Gentle care</div></div></div>
+          <div class="d-flex align-items-center gap-2"><i class="bi bi-clock-fill fs-4 text-gradient"></i><div><div class="fw-bold">24/7</div><div class="muted small">Online booking</div></div></div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="hero-media">
+          <img src="{% static 'img/dc_hero.png' %}" alt="Dental care" class="main">
+          <img src="{% static 'img/dc_tooth3d.png' %}" alt="" class="floating-tooth">
+          <div class="floating-badge">
+            <span class="ic"><i class="bi bi-star-fill"></i></span>
+            <div><div class="fw-bold" style="line-height:1;">4.9 / 5</div><div class="muted" style="font-size:.72rem;">2,300+ reviews</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STAT STRIP -->
+<div class="container mt-n5" style="margin-top:-2.5rem; position:relative; z-index:5;">
+  <div class="stat-strip">
+    <div class="row text-center g-4">
+      <div class="col-6 col-md-3"><div class="num" data-count="10000">10k+</div><div><i class="bi bi-emoji-smile me-1"></i>Happy Patients</div></div>
+      <div class="col-6 col-md-3"><div class="num" data-count="25">25+</div><div><i class="bi bi-person-badge me-1"></i>Expert Dentists</div></div>
+      <div class="col-6 col-md-3"><div class="num" data-count="50000">50k+</div><div><i class="bi bi-clipboard2-heart me-1"></i>Treatments</div></div>
+      <div class="col-6 col-md-3"><div class="num">15+</div><div><i class="bi bi-award me-1"></i>Years Experience</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES + PRICING -->
+<section class="section">
+  <div class="container">
+    <div class="text-center mb-5">
+      <div class="eyebrow mb-2">Our Services & Pricing</div>
+      <h2 class="section-title">Transparent prices, expert care</h2>
+      <p class="muted">No hidden fees. Know the cost before you book.</p>
+    </div>
+    <div class="row g-4">
+      {% for service in services %}
+      <div class="col-md-6 col-lg-4">
+        <div class="service-card price-card">
+          {% if forloop.counter == 2 %}<div class="ribbon">POPULAR</div>{% endif %}
+          <div class="feature-icon"><i class="bi {{ service.icon }}"></i></div>
+          <h5 class="fw-bold">{{ service.name }}</h5>
+          <p class="muted small">{{ service.description|truncatewords:14 }}</p>
+          <div class="d-flex align-items-center justify-content-between mt-3 pt-3" style="border-top:2px solid var(--border);">
+            <span class="price-tag"><span class="cur">₹</span><span class="amt">{{ service.price|floatformat:0 }}</span><span class="per">/ visit</span></span>
+            <span class="badge-app badge-info"><i class="bi bi-clock"></i> {{ service.duration_minutes }}m</span>
+          </div>
+          <a href="{% url 'accounts:signup' %}" class="btn-app w-100 justify-content-center mt-3"><i class="bi bi-calendar-plus"></i> Book Now</a>
+        </div>
+      </div>
+      {% empty %}<p class="muted text-center">Run <code>python manage.py seed_demo</code> to load services.</p>{% endfor %}
+    </div>
+    <div class="text-center mt-4">
+      <a href="{% url 'pages:services' %}" class="btn-ghost">View all services <i class="bi bi-arrow-right"></i></a>
+      <a href="{% url 'aiassistant:cost_estimator' %}" class="btn-ghost"><i class="bi bi-calculator"></i> AI Cost Estimator</a>
+    </div>
+  </div>
+</section>
+
+<!-- TECHNOLOGY & MACHINERY -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="text-center mb-5">
+      <div class="eyebrow mb-2">State-of-the-art Technology</div>
+      <h2 class="section-title">Modern equipment for precise care</h2>
+      <p class="muted">We invest in the latest dental machinery so your treatment is faster, safer and painless.</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3">
+        <div class="tech-card">
+          <img src="{% static 'img/dc_xray.png' %}" alt="Digital X-Ray">
+          <div class="body"><h6 class="fw-bold mb-1"><i class="bi bi-radioactive text-gradient me-1"></i>Digital X-Ray</h6><p class="muted small mb-0">Low-radiation panoramic imaging for accurate diagnosis.</p></div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="tech-card">
+          <img src="{% static 'img/dc_scanner.png' %}" alt="3D Scanner">
+          <div class="body"><h6 class="fw-bold mb-1"><i class="bi bi-badge-3d text-gradient me-1"></i>3D Intraoral Scanner</h6><p class="muted small mb-0">Digital impressions — no messy moulds, perfect fit.</p></div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="tech-card">
+          <img src="{% static 'img/dc_tools.png' %}" alt="Sterile Instruments">
+          <div class="body"><h6 class="fw-bold mb-1"><i class="bi bi-tools text-gradient me-1"></i>Sterile Instruments</h6><p class="muted small mb-0">Hospital-grade sterilisation for every single visit.</p></div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="tech-card">
+          <img src="{% static 'img/dc_implant.png' %}" alt="Implants">
+          <div class="body"><h6 class="fw-bold mb-1"><i class="bi bi-gem text-gradient me-1"></i>Titanium Implants</h6><p class="muted small mb-0">Permanent, natural-looking tooth replacement.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE -->
+<section class="section">
+  <div class="container">
+    <div class="row g-5 align-items-center">
+      <div class="col-lg-5">
+        <div class="eyebrow mb-2">Why DentaCare</div>
+        <h2 class="section-title mb-3">A clinic that feels different</h2>
+        <p class="muted">We combine caring dentists with smart software so your whole experience — from booking to billing — is smooth and stress-free.</p>
+        <div class="d-flex flex-column gap-3 mt-4">
+          <div class="d-flex gap-3"><span class="feature-icon mb-0" style="width:46px;height:46px;font-size:1.2rem;"><i class="bi bi-diagram-3"></i></span><div><h6 class="fw-bold mb-0">Digital Tooth Charting</h6><span class="muted small">Every tooth tracked and visualised.</span></div></div>
+          <div class="d-flex gap-3"><span class="feature-icon mb-0" style="width:46px;height:46px;font-size:1.2rem;"><i class="bi bi-robot"></i></span><div><h6 class="fw-bold mb-0">Built-in AI Assistant</h6><span class="muted small">Symptom checks & instant estimates.</span></div></div>
+          <div class="d-flex gap-3"><span class="feature-icon mb-0" style="width:46px;height:46px;font-size:1.2rem;"><i class="bi bi-receipt-cutoff"></i></span><div><h6 class="fw-bold mb-0">Easy Billing</h6><span class="muted small">Clear invoices, online payments.</span></div></div>
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <div class="row g-4">
+          <div class="col-sm-6"><div class="feature-card"><div class="feature-icon"><i class="bi bi-calendar2-check"></i></div><h6 class="fw-bold">Smart Scheduling</h6><p class="muted small mb-0">AI no-show prediction keeps the calendar full.</p></div></div>
+          <div class="col-sm-6"><div class="feature-card"><div class="feature-icon"><i class="bi bi-capsule-pill"></i></div><h6 class="fw-bold">e-Prescriptions</h6><p class="muted small mb-0">Printable prescriptions with dosage details.</p></div></div>
+          <div class="col-sm-6"><div class="feature-card"><div class="feature-icon"><i class="bi bi-bar-chart-line"></i></div><h6 class="fw-bold">Live Analytics</h6><p class="muted small mb-0">Revenue, growth & treatment insights.</p></div></div>
+          <div class="col-sm-6"><div class="feature-card"><div class="feature-icon"><i class="bi bi-shield-lock"></i></div><h6 class="fw-bold">Private & Secure</h6><p class="muted small mb-0">Your data stays safe and confidential.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="text-center mb-5"><div class="eyebrow mb-2">How it works</div><h2 class="section-title">Your visit in 4 simple steps</h2></div>
+    <div class="row g-4">
+      <div class="col-md-3"><div class="step"><div class="num"><i class="bi bi-calendar-plus"></i></div><h6 class="fw-bold">1. Book Online</h6><p class="muted small">Pick a dentist, service, date & time in seconds.</p></div></div>
+      <div class="col-md-3"><div class="step"><div class="num"><i class="bi bi-clipboard2-pulse"></i></div><h6 class="fw-bold">2. Get Examined</h6><p class="muted small">Digital X-ray & 3D scan for accurate diagnosis.</p></div></div>
+      <div class="col-md-3"><div class="step"><div class="num"><i class="bi bi-tooth"></i></div><h6 class="fw-bold">3. Painless Treatment</h6><p class="muted small">Gentle, modern procedures by expert hands.</p></div></div>
+      <div class="col-md-3"><div class="step"><div class="num"><i class="bi bi-emoji-laughing"></i></div><h6 class="fw-bold">4. Smile Bright</h6><p class="muted small">Leave happy with aftercare guidance.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="section">
+  <div class="container">
+    <div class="row g-5 align-items-center">
+      <div class="col-lg-6">
+        <img src="{% static 'img/dc_team.png' %}" alt="Our dentists" class="img-fluid" style="border-radius:var(--radius-lg); border:3px solid #fff; box-shadow:var(--shadow-lg);">
+      </div>
+      <div class="col-lg-6">
+        <div class="eyebrow mb-2">Meet the team</div>
+        <h2 class="section-title mb-3">Dentists you can trust</h2>
+        <p class="muted">Our specialists bring years of experience across general, cosmetic and surgical dentistry — all committed to gentle, patient-first care.</p>
+        <div class="row g-3 mt-2">
+          <div class="col-6"><div class="card-app d-flex align-items-center gap-2"><i class="bi bi-award-fill text-gradient fs-3"></i><div><div class="fw-bold">15+ Years</div><div class="muted small">Avg. experience</div></div></div></div>
+          <div class="col-6"><div class="card-app d-flex align-items-center gap-2"><i class="bi bi-people-fill text-gradient fs-3"></i><div><div class="fw-bold">25+ Experts</div><div class="muted small">Across specialties</div></div></div></div>
+        </div>
+        <a href="{% url 'pages:about' %}" class="btn-ghost mt-4">Learn more about us <i class="bi bi-arrow-right"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+{% if reviews %}
+<section class="section section-alt">
+  <div class="container">
+    <div class="text-center mb-5"><div class="eyebrow mb-2">Testimonials</div><h2 class="section-title">Loved by patients</h2></div>
+    <div class="row g-4">
+      {% for review in reviews %}
+      <div class="col-md-4">
+        <div class="feature-card">
+          <div class="text-warning mb-2 fs-5">{% for i in "12345"|make_list %}<i class="bi {% if forloop.counter <= review.rating %}bi-star-fill{% else %}bi-star{% endif %}"></i>{% endfor %}</div>
+          <p class="mb-3">"{{ review.comment|default:'Great experience at DentaCare!' }}"</p>
+          <div class="d-flex align-items-center gap-2 mt-auto"><div class="avatar" style="width:40px;height:40px;">{{ review.patient.initials }}</div><div><div class="fw-bold small">{{ review.patient.display_name }}</div><div class="muted" style="font-size:.72rem;"><i class="bi bi-patch-check-fill text-primary"></i> Verified Patient</div></div></div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- FAQ -->
+<section class="section">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-5">
+        <div class="eyebrow mb-2">FAQ</div>
+        <h2 class="section-title mb-3">Questions? Answered.</h2>
+        <p class="muted">Can't find what you're looking for? Our friendly front desk is happy to help.</p>
+        <a href="{% url 'pages:contact' %}" class="btn-app mt-2"><i class="bi bi-headset"></i> Contact Us</a>
+      </div>
+      <div class="col-lg-7">
+        <div class="faq-item"><div class="faq-q">Does the treatment hurt? <i class="bi bi-plus-lg"></i></div><div class="faq-a">We use modern, minimally-invasive techniques and local anaesthesia to keep every procedure comfortable and virtually painless.</div></div>
+        <div class="faq-item"><div class="faq-q">How do I book an appointment? <i class="bi bi-plus-lg"></i></div><div class="faq-a">Just sign up for a free account and choose your dentist, service, date and time — it takes under a minute.</div></div>
+        <div class="faq-item"><div class="faq-q">Do you accept insurance? <i class="bi bi-plus-lg"></i></div><div class="faq-a">Yes, we accept most major insurance providers and offer UPI, card and cash payments.</div></div>
+        <div class="faq-item"><div class="faq-q">Can I get a cost estimate first? <i class="bi bi-plus-lg"></i></div><div class="faq-a">Absolutely — use our built-in AI Cost Estimator for an instant, tailored price range for any treatment.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="stat-strip d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
+      <div>
+        <h2 class="text-white fw-bold mb-1">Ready for a healthier smile?</h2>
+        <p class="mb-0" style="opacity:.9;">Create your free account and book in under a minute.</p>
+      </div>
+      <a href="{% url 'accounts:signup' %}" class="btn-ghost"><i class="bi bi-person-plus"></i> Get Started Free</a>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.querySelectorAll('.faq-q').forEach(q => q.addEventListener('click', () => q.parentElement.classList.toggle('open')));
+</script>
+{% endblock %}

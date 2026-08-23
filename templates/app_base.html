@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+<div class="app-shell">
+  <div class="sidebar-backdrop"></div>
+  <aside class="sidebar">
+    <a href="{% url 'accounts:redirect_dashboard' %}" class="brand">
+      <span class="brand-badge"><i class="bi bi-hospital"></i></span>
+      Denta<span class="text-gradient">Care</span>
+    </a>
+    <span class="role-chip mb-3"><i class="bi {{ active_theme.icon }}"></i>{{ active_theme.label }}</span>
+
+    <nav class="flex-grow-1 overflow-auto">
+      {% with r=user.role url_name=request.resolver_match.url_name %}
+      <a class="side-link {% if 'dashboard' in url_name %}active{% endif %}" href="{% url 'accounts:redirect_dashboard' %}"><i class="bi bi-grid-1x2-fill"></i>Dashboard</a>
+
+      {% if r == 'patient' %}
+        <div class="side-section">My Care</div>
+        <a class="side-link" href="{% url 'clinic:appointment_create' %}"><i class="bi bi-calendar-plus"></i>Book Appointment</a>
+        <a class="side-link {% if url_name == 'appointment_list' %}active{% endif %}" href="{% url 'clinic:appointment_list' %}"><i class="bi bi-calendar2-week"></i>My Appointments</a>
+        <a class="side-link {% if url_name == 'treatment_list' %}active{% endif %}" href="{% url 'clinic:treatment_list' %}"><i class="bi bi-clipboard2-heart"></i>My Treatments</a>
+        <a class="side-link {% if 'prescription' in url_name %}active{% endif %}" href="{% url 'clinic:prescription_list' %}"><i class="bi bi-capsule"></i>Prescriptions</a>
+        <a class="side-link {% if 'invoice' in url_name %}active{% endif %}" href="{% url 'clinic:invoice_list' %}"><i class="bi bi-receipt"></i>My Bills</a>
+        <a class="side-link" href="{% url 'clinic:review_create' %}"><i class="bi bi-star"></i>Leave Review</a>
+      {% endif %}
+
+      {% if r == 'dentist' %}
+        <div class="side-section">Clinical</div>
+        <a class="side-link {% if url_name == 'appointment_list' %}active{% endif %}" href="{% url 'clinic:appointment_list' %}"><i class="bi bi-calendar2-week"></i>Appointments</a>
+        <a class="side-link {% if 'patient' in url_name %}active{% endif %}" href="{% url 'clinic:patient_list' %}"><i class="bi bi-people"></i>Patients</a>
+        <a class="side-link {% if 'treatment' in url_name %}active{% endif %}" href="{% url 'clinic:treatment_list' %}"><i class="bi bi-clipboard2-heart"></i>Treatments</a>
+        <a class="side-link {% if 'prescription' in url_name %}active{% endif %}" href="{% url 'clinic:prescription_list' %}"><i class="bi bi-capsule"></i>Prescriptions</a>
+      {% endif %}
+
+      {% if r == 'receptionist' %}
+        <div class="side-section">Front Desk</div>
+        <a class="side-link {% if url_name == 'appointment_list' %}active{% endif %}" href="{% url 'clinic:appointment_list' %}"><i class="bi bi-calendar2-week"></i>Appointments</a>
+        <a class="side-link {% if 'patient' in url_name %}active{% endif %}" href="{% url 'clinic:patient_list' %}"><i class="bi bi-people"></i>Patients</a>
+        <a class="side-link {% if 'invoice' in url_name %}active{% endif %}" href="{% url 'clinic:invoice_list' %}"><i class="bi bi-receipt"></i>Invoices</a>
+        <a class="side-link {% if 'inventory' in url_name %}active{% endif %}" href="{% url 'clinic:inventory_list' %}"><i class="bi bi-box-seam"></i>Inventory</a>
+      {% endif %}
+
+      {% if user.is_admin %}
+        <div class="side-section">Administration</div>
+        <a class="side-link {% if url_name == 'reports' %}active{% endif %}" href="{% url 'manage_panel:reports' %}"><i class="bi bi-graph-up-arrow"></i>Reports</a>
+        <a class="side-link {% if 'user' in url_name %}active{% endif %}" href="{% url 'manage_panel:user_list' %}"><i class="bi bi-person-badge"></i>Users</a>
+        <a class="side-link" href="{% url 'manage_panel:resource_list' slug='services' %}"><i class="bi bi-clipboard2-pulse"></i>Services</a>
+        <a class="side-link" href="{% url 'manage_panel:resource_list' slug='inventory' %}"><i class="bi bi-box-seam"></i>Inventory</a>
+        <a class="side-link" href="{% url 'manage_panel:resource_list' slug='reviews' %}"><i class="bi bi-star"></i>Reviews</a>
+        <div class="side-section">Clinical</div>
+        <a class="side-link {% if url_name == 'appointment_list' %}active{% endif %}" href="{% url 'clinic:appointment_list' %}"><i class="bi bi-calendar2-week"></i>Appointments</a>
+        <a class="side-link {% if 'patient' in url_name %}active{% endif %}" href="{% url 'clinic:patient_list' %}"><i class="bi bi-people"></i>Patients</a>
+        <a class="side-link {% if 'treatment' in url_name %}active{% endif %}" href="{% url 'clinic:treatment_list' %}"><i class="bi bi-clipboard2-heart"></i>Treatments</a>
+        <a class="side-link {% if 'prescription' in url_name %}active{% endif %}" href="{% url 'clinic:prescription_list' %}"><i class="bi bi-capsule"></i>Prescriptions</a>
+        <a class="side-link {% if 'invoice' in url_name %}active{% endif %}" href="{% url 'clinic:invoice_list' %}"><i class="bi bi-receipt"></i>Invoices</a>
+      {% endif %}
+
+      <div class="side-section">AI Assistant</div>
+      <a class="side-link" href="{% url 'aiassistant:hub' %}"><i class="bi bi-robot"></i>AI Hub</a>
+      <a class="side-link" href="{% url 'aiassistant:symptom_checker' %}"><i class="bi bi-heart-pulse"></i>Symptom Checker</a>
+      <a class="side-link" href="{% url 'aiassistant:cost_estimator' %}"><i class="bi bi-calculator"></i>Cost Estimator</a>
+      <a class="side-link" href="{% url 'aiassistant:chatbot' %}"><i class="bi bi-chat-dots"></i>DentaBot</a>
+      {% endwith %}
+    </nav>
+
+    <div class="mt-auto pt-3 border-top">
+      <a class="side-link" href="{% url 'accounts:profile' %}"><i class="bi bi-person-gear"></i>My Profile</a>
+      <a class="side-link" href="{% url 'pages:home' %}"><i class="bi bi-globe"></i>Public Site</a>
+      <form method="post" action="{% url 'accounts:logout' %}">{% csrf_token %}
+        <button class="side-link w-100 border-0 bg-transparent" type="submit"><i class="bi bi-box-arrow-right"></i>Logout</button>
+      </form>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="hamburger"><i class="bi bi-list"></i></button>
+      <div>
+        <h5>{% block page_title %}Dashboard{% endblock %}</h5>
+        <div class="small muted d-none d-md-block">{% block page_subtitle %}Welcome back, {{ user.display_name }}{% endblock %}</div>
+      </div>
+      <div class="ms-auto d-flex align-items-center gap-3">
+        <a href="{% url 'accounts:profile' %}" class="d-flex align-items-center gap-2 text-decoration-none">
+          <div class="avatar">
+            {% if user.avatar %}<img src="{{ user.avatar.url }}" alt="">{% else %}{{ user.initials }}{% endif %}
+          </div>
+          <div class="d-none d-sm-block">
+            <div class="fw-bold text-dark small">{{ user.display_name }}</div>
+            <div class="muted" style="font-size:.72rem;">{{ user.get_role_display }}</div>
+          </div>
+        </a>
+      </div>
+    </header>
+    <main class="content">
+      {% block app_content %}{% endblock %}
+    </main>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.querySelectorAll('.side-link').forEach(l => l.addEventListener('click', () => {
+    if (window.innerWidth <= 992) {
+      document.querySelector('.sidebar')?.classList.remove('open');
+      document.querySelector('.sidebar-backdrop')?.classList.remove('show');
+    }
+  }));
+</script>
+{% block app_scripts %}{% endblock %}
+{% endblock %}

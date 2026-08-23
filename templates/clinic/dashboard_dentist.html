@@ -1,0 +1,136 @@
+{% extends 'app_base.html' %}
+{% load static %}
+{% block page_title %}Dentist Workspace{% endblock %}
+{% block page_subtitle %}Clinical dashboard{% endblock %}
+
+{% block app_content %}
+<!-- Dental hero banner -->
+<div class="dash-hero">
+  <img src="{% static 'img/dc_tooth3d.png' %}" alt="" class="tooth-deco">
+  <div class="ring-deco"></div>
+  <div style="position:relative; z-index:2;">
+    <div class="d-flex align-items-center gap-2 mb-1"><i class="bi bi-heart-pulse-fill"></i><span style="opacity:.9; font-weight:700;">Good day, Doctor</span></div>
+    <h3>Dr. {{ user.display_name }}</h3>
+    <div class="sub d-flex flex-wrap gap-3 mt-2">
+      {% if user.doctor_profile %}
+      <span><i class="bi bi-mortarboard-fill me-1"></i>{{ user.doctor_profile.specialization }}</span>
+      <span><i class="bi bi-star-fill me-1 text-warning"></i>{{ user.doctor_profile.rating }} rating</span>
+      <span><i class="bi bi-briefcase-fill me-1"></i>{{ user.doctor_profile.experience_years }} yrs experience</span>
+      {% endif %}
+    </div>
+    <div class="mt-3 d-flex flex-wrap gap-2">
+      <a href="{% url 'clinic:treatment_create' %}" class="btn-ghost" style="background:rgba(255,255,255,.15); color:#fff; border-color:rgba(255,255,255,.4);"><i class="bi bi-plus-circle"></i> New Treatment</a>
+      <a href="{% url 'clinic:prescription_create' %}" class="btn-ghost" style="background:rgba(255,255,255,.15); color:#fff; border-color:rgba(255,255,255,.4);"><i class="bi bi-capsule"></i> Write Prescription</a>
+    </div>
+  </div>
+</div>
+
+<!-- KPIs -->
+<div class="grid-cards cols-4 mb-4">
+  <div class="card-app stat-card"><div class="d-flex justify-content-between"><div><div class="label">Today's Patients</div><div class="value">{{ today_appointments|length }}</div><div class="trend muted"><i class="bi bi-calendar-day"></i> scheduled</div></div><div class="icon"><i class="bi bi-calendar-day"></i></div></div></div>
+  <div class="card-app stat-card"><div class="d-flex justify-content-between"><div><div class="label">My Patients</div><div class="value">{{ patients_count }}</div><div class="trend text-success"><i class="bi bi-people"></i> total</div></div><div class="icon"><i class="bi bi-people"></i></div></div></div>
+  <div class="card-app stat-card"><div class="d-flex justify-content-between"><div><div class="label">Treatments</div><div class="value">{{ treatments_count }}</div><div class="trend muted"><i class="bi bi-clipboard2-heart"></i> completed</div></div><div class="icon"><i class="bi bi-clipboard2-heart"></i></div></div></div>
+  <div class="card-app stat-card"><div class="d-flex justify-content-between"><div><div class="label">Pending</div><div class="value">{{ pending_count }}</div><div class="trend text-warning"><i class="bi bi-hourglass-split"></i> awaiting</div></div><div class="icon"><i class="bi bi-hourglass-split"></i></div></div></div>
+</div>
+
+<!-- Quick clinical tools -->
+<div class="card-app mb-4">
+  <h6 class="fw-bold mb-3"><i class="bi bi-lightning-charge-fill text-gradient"></i> Quick Tools</h6>
+  <div class="grid-cards cols-4">
+    <a href="{% url 'clinic:treatment_create' %}" class="feature-card hover-pop text-decoration-none"><div class="feature-icon"><i class="bi bi-tooth"></i></div><h6 class="fw-bold mb-0 text-dark">Record Treatment</h6><span class="muted small">Log a procedure</span></a>
+    <a href="{% url 'clinic:prescription_create' %}" class="feature-card hover-pop text-decoration-none"><div class="feature-icon"><i class="bi bi-capsule-pill"></i></div><h6 class="fw-bold mb-0 text-dark">Prescription</h6><span class="muted small">Write & print Rx</span></a>
+    <a href="{% url 'clinic:patient_list' %}" class="feature-card hover-pop text-decoration-none"><div class="feature-icon"><i class="bi bi-diagram-3"></i></div><h6 class="fw-bold mb-0 text-dark">Tooth Charts</h6><span class="muted small">View & update</span></a>
+    <a href="{% url 'clinic:appointment_list' %}" class="feature-card hover-pop text-decoration-none"><div class="feature-icon"><i class="bi bi-calendar2-week"></i></div><h6 class="fw-bold mb-0 text-dark">Schedule</h6><span class="muted small">All appointments</span></a>
+  </div>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-lg-8">
+    <div class="card-app">
+      <h6 class="fw-bold mb-3"><i class="bi bi-graph-up-arrow text-gradient"></i> Appointments (last 12 months)</h6>
+      <div style="height:280px;"><canvas id="apptsChart"></canvas></div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card-app">
+      <h6 class="fw-bold mb-3"><i class="bi bi-pie-chart-fill text-gradient"></i> Procedure Mix</h6>
+      <div style="height:280px;"><canvas id="treatChart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-7">
+    <div class="card-app">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h6 class="fw-bold mb-0"><i class="bi bi-calendar-day text-gradient"></i> Today's Schedule</h6>
+        <a href="{% url 'clinic:appointment_list' %}" class="btn-soft">All</a>
+      </div>
+      {% if today_appointments %}
+      <table class="table-app">
+        <thead><tr><th>Time</th><th>Patient</th><th>Procedure</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+          {% for a in today_appointments %}
+          <tr>
+            <td class="fw-bold">{{ a.time|time:"g:i A" }}</td>
+            <td><div class="d-flex align-items-center gap-2"><div class="avatar" style="width:32px;height:32px;font-size:.72rem;">{{ a.patient.initials }}</div>{{ a.patient.display_name }}</div></td>
+            <td><i class="bi {{ a.service.icon|default:'bi-tooth' }} text-gradient me-1"></i>{{ a.service.name|default:"—" }}</td>
+            <td><span class="badge-app badge-{{ a.status_color }}">{{ a.get_status_display }}</span></td>
+            <td class="text-end"><a href="{% url 'clinic:appointment_set_status' a.pk 'completed' %}" class="btn-soft" title="Mark completed"><i class="bi bi-check2-circle"></i></a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}<div class="text-center py-4"><img src="{% static 'img/dc_tooth3d.png' %}" style="width:80px;opacity:.6;" class="mb-2"><p class="muted mb-0">No appointments today. Enjoy the break!</p></div>{% endif %}
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <!-- Equipment status (dental flair) -->
+    <div class="card-app mb-4">
+      <h6 class="fw-bold mb-3"><i class="bi bi-cpu-fill text-gradient"></i> Equipment Status</h6>
+      <div class="d-flex align-items-center gap-3 py-2 border-bottom">
+        <span class="feature-icon mb-0 pulse" style="width:44px;height:44px;font-size:1.1rem;background:linear-gradient(135deg,#16a34a,#22c55e);"><i class="bi bi-hospital"></i></span>
+        <div class="flex-grow-1"><div class="fw-bold small">Dental Chair Unit</div><div class="muted" style="font-size:.75rem;">Ready for next patient</div></div>
+        <span class="badge-app badge-success">Online</span>
+      </div>
+      <div class="d-flex align-items-center gap-3 py-2 border-bottom">
+        <span class="feature-icon mb-0" style="width:44px;height:44px;font-size:1.1rem;"><i class="bi bi-radioactive"></i></span>
+        <div class="flex-grow-1"><div class="fw-bold small">Digital X-Ray</div><div class="muted" style="font-size:.75rem;">Calibrated today</div></div>
+        <span class="badge-app badge-success">Online</span>
+      </div>
+      <div class="d-flex align-items-center gap-3 py-2 border-bottom">
+        <span class="feature-icon mb-0 spin-slow" style="width:44px;height:44px;font-size:1.1rem;background:linear-gradient(135deg,#0ea5e9,#06b6d4);"><i class="bi bi-arrow-repeat"></i></span>
+        <div class="flex-grow-1"><div class="fw-bold small">Autoclave Sterilizer</div><div class="muted" style="font-size:.75rem;">Cycle in progress</div></div>
+        <span class="badge-app badge-warning">Busy</span>
+      </div>
+      <div class="d-flex align-items-center gap-3 py-2">
+        <span class="feature-icon mb-0" style="width:44px;height:44px;font-size:1.1rem;background:linear-gradient(135deg,#7c3aed,#a855f7);"><i class="bi bi-badge-3d"></i></span>
+        <div class="flex-grow-1"><div class="fw-bold small">3D Intraoral Scanner</div><div class="muted" style="font-size:.75rem;">Idle · ready</div></div>
+        <span class="badge-app badge-success">Online</span>
+      </div>
+    </div>
+
+    <div class="card-app">
+      <h6 class="fw-bold mb-3"><i class="bi bi-activity text-gradient"></i> Recent Treatments</h6>
+      {% for t in recent_treatments %}
+      <div class="d-flex align-items-center gap-3 py-2 border-bottom">
+        <span class="feature-icon mb-0" style="width:40px;height:40px;font-size:1rem;"><i class="bi {{ t.service.icon|default:'bi-tooth' }}"></i></span>
+        <div class="flex-grow-1"><div class="fw-bold small">{{ t.service.name|default:'Treatment' }}{% if t.tooth_number %} · Tooth #{{ t.tooth_number }}{% endif %}</div><div class="muted" style="font-size:.75rem;">{{ t.patient.display_name }} · {{ t.date|date:"d M" }}</div></div>
+        <div class="fw-bold small">₹{{ t.cost|floatformat:0 }}</div>
+      </div>
+      {% empty %}<p class="muted small">No treatments recorded yet.</p>{% endfor %}
+    </div>
+  </div>
+</div>
+
+<script id="apptsData" type="application/json">{{ appts_month_json|safe }}</script>
+<script id="treatData" type="application/json">{{ treatment_dist_json|safe }}</script>
+{% endblock %}
+
+{% block app_scripts %}
+<script>
+  lineChart('apptsChart', 'apptsData', 'Appointments');
+  doughnutChart('treatChart', 'treatData');
+</script>
+{% endblock %}

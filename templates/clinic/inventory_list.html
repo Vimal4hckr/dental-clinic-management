@@ -1,0 +1,42 @@
+{% extends 'app_base.html' %}
+{% load clinic_extras %}
+{% block page_title %}Inventory{% endblock %}
+{% block page_subtitle %}Stock & supplies{% endblock %}
+
+{% block app_content %}
+<div class="grid-cards cols-3 mb-4">
+  <div class="card-app stat-card"><div class="d-flex justify-content-between"><div><div class="label">Total Items</div><div class="value">{{ items|length }}</div></div><div class="icon"><i class="bi bi-box-seam"></i></div></div></div>
+  <div class="card-app stat-card"><div class="d-flex justify-content-between"><div><div class="label">Low Stock</div><div class="value">{{ low_count }}</div></div><div class="icon" style="background:linear-gradient(135deg,#ef4444,#f97316);"><i class="bi bi-exclamation-triangle"></i></div></div></div>
+  <div class="card-app stat-card"><div class="d-flex justify-content-between"><div><div class="label">Catalog Value</div><div class="value">{{ total_value|currency }}</div></div><div class="icon"><i class="bi bi-cash-stack"></i></div></div></div>
+</div>
+
+<div class="card-app">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h6 class="fw-bold mb-0"><i class="bi bi-box-seam text-gradient"></i> Stock Items</h6>
+    <a href="{% url 'clinic:inventory_create' %}" class="btn-app"><i class="bi bi-plus-lg"></i> Add Item</a>
+  </div>
+  <div class="table-responsive">
+    <table class="table-app">
+      <thead><tr><th>Item</th><th>Category</th><th>Qty</th><th>Reorder</th><th>Unit Price</th><th>Status</th><th class="text-end">Actions</th></tr></thead>
+      <tbody>
+        {% for item in items %}
+        <tr>
+          <td><div class="d-flex align-items-center gap-2"><i class="bi {{ item.icon }} text-gradient fs-5"></i><span class="fw-bold">{{ item.name }}</span></div></td>
+          <td>{{ item.category }}</td>
+          <td class="fw-bold">{{ item.quantity }} {{ item.unit }}</td>
+          <td>{{ item.reorder_level }}</td>
+          <td>{{ item.unit_price|currency }}</td>
+          <td>{% if item.is_low %}<span class="badge-app badge-danger">Low Stock</span>{% else %}<span class="badge-app badge-success">In Stock</span>{% endif %}</td>
+          <td class="text-end">
+            <a href="{% url 'clinic:inventory_update' item.pk %}" class="btn-soft"><i class="bi bi-pencil"></i></a>
+            <a href="{% url 'clinic:inventory_delete' item.pk %}" class="btn-soft"><i class="bi bi-trash3"></i></a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="7" class="text-center py-5 muted"><i class="bi bi-box fs-1 d-block mb-2"></i>No inventory items.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
