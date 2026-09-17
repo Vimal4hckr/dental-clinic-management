@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Sign Up · DentaCare{% endblock %}
+{% block title %}Sign Up · Niru's Care{% endblock %}
 
 {% block body %}
 <div class="auth-wrap">
@@ -8,7 +8,7 @@
     <img src="{% static 'img/dc_tooth3d.png' %}" alt="" class="tooth-deco">
     <a href="{% url 'pages:home' %}" class="d-flex align-items-center gap-2 text-white mb-5 text-decoration-none">
       <span class="brand-badge" style="background:rgba(255,255,255,.2)"><i class="bi bi-hospital"></i></span>
-      <span class="brand text-white">DentaCare</span>
+      <span class="brand text-white">Niru's Care</span>
     </a>
     <h1 class="fw-bold display-6">Start your journey to a healthier smile.</h1>
     <p class="mt-3" style="opacity:.9; max-width:420px;">Create a free patient account to book appointments and access AI dental tools in seconds.</p>
@@ -23,7 +23,7 @@
       <div class="text-center mb-4">
         <span class="brand-badge mx-auto mb-2"><i class="bi bi-person-plus"></i></span>
         <h3 class="fw-bold">Create your account</h3>
-        <p class="muted">Join DentaCare as a patient</p>
+        <p class="muted">Join Niru's Care as a patient</p>
       </div>
       <form method="post">
         {% csrf_token %}

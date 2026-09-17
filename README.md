@@ -34,7 +34,7 @@ It also ships with a suite of **offline, rule-based AI tools** (symptom checker,
 - **Billing** — invoices with line items, tax, discount, partial payments and automatic balance calculation.
 - **Inventory** — stock tracking with low-stock alerts.
 - **Reviews** — patient feedback shown on the public website.
-- **Offline AI assistant** — symptom checker, DentaBot chatbot and treatment cost estimator (no external APIs).
+- **Offline AI assistant** — symptom checker, Niru's Care chatbot and treatment cost estimator (no external APIs).
 - **Analytics** — revenue, appointment and patient-growth charts powered by Chart.js.
 - **Custom admin panel** — a bespoke management console (the default Django admin is intentionally not used) with full CRUD.
 - **Public marketing website** — home, services (with pricing), about and contact pages.

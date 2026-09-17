@@ -9,7 +9,7 @@ def theme_context(request):
     else:
         theme = {
             'name': 'theme-public',
-            'label': 'DentaCare',
+            'label': "Niru's Dentistry",
             'primary': '#2563eb',
             'accent': '#06b6d4',
             'gradient': 'linear-gradient(135deg, #2563eb 0%, #06b6d4 100%)',
@@ -18,5 +18,5 @@ def theme_context(request):
     return {
         'active_theme': theme,
         'all_roles': Role,
-        'brand_name': 'DentaCare',
+        'brand_name': "Niru's Dentistry",
     }

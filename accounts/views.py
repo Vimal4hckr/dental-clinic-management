@@ -9,19 +9,28 @@ from .models import Role
 
 
 def signup_view(request):
+
     if request.user.is_authenticated:
         return redirect('accounts:redirect_dashboard')
+
     if request.method == 'POST':
         form = SignUpForm(request.POST)
+
         if form.is_valid():
             user = form.save()
             login(request, user)
-            messages.success(request, f'Welcome to DentaCare, {user.first_name}! Your patient account is ready.')
+
+            messages.success(
+                request,
+                f"Welcome to Niru's Care, {user.first_name}! Your patient account is ready."
+            )
+
             return redirect('accounts:redirect_dashboard')
+
     else:
         form = SignUpForm()
-    return render(request, 'accounts/signup.html', {'form': form})
 
+    return render(request, 'accounts/signup.html', {'form': form})
 
 class AppLoginView(LoginView):
     template_name = 'accounts/login.html'

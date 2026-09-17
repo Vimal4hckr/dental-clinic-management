@@ -1,6 +1,6 @@
 {% extends 'public_base.html' %}
 {% load static %}
-{% block title %}DentaCare · Advanced Dental Clinic & Management{% endblock %}
+{% block title %}Niru's Care · Advanced Dental Clinic & Management{% endblock %}
 
 {% block public_content %}
 <!-- HERO -->
@@ -10,7 +10,7 @@
       <div class="col-lg-6 animate-rise">
         <span class="pill mb-3"><i class="bi bi-patch-check-fill"></i> Trusted by 10,000+ smiles</span>
         <h1>Advanced dental care,<br><span class="text-gradient">powered by technology.</span></h1>
-        <p class="lead mt-3">From digital X-rays and 3D scanners to painless treatments — DentaCare brings world-class dentistry and smart clinic management together in one place.</p>
+        <p class="lead mt-3">From digital X-rays and 3D scanners to painless treatments — Niru's Care brings world-class dentistry and smart clinic management together in one place.</p>
         <div class="d-flex flex-wrap gap-2 mt-4">
           <a href="{% url 'accounts:signup' %}" class="btn-app"><i class="bi bi-calendar-plus"></i> Book Appointment</a>
           <a href="{% url 'aiassistant:symptom_checker' %}" class="btn-ghost"><i class="bi bi-robot"></i> AI Symptom Checker</a>
@@ -121,7 +121,7 @@
   <div class="container">
     <div class="row g-5 align-items-center">
       <div class="col-lg-5">
-        <div class="eyebrow mb-2">Why DentaCare</div>
+        <div class="eyebrow mb-2">Why Niru's Care</div>
         <h2 class="section-title mb-3">A clinic that feels different</h2>
         <p class="muted">We combine caring dentists with smart software so your whole experience — from booking to billing — is smooth and stress-free.</p>
         <div class="d-flex flex-column gap-3 mt-4">
@@ -186,7 +186,7 @@
       <div class="col-md-4">
         <div class="feature-card">
           <div class="text-warning mb-2 fs-5">{% for i in "12345"|make_list %}<i class="bi {% if forloop.counter <= review.rating %}bi-star-fill{% else %}bi-star{% endif %}"></i>{% endfor %}</div>
-          <p class="mb-3">"{{ review.comment|default:'Great experience at DentaCare!' }}"</p>
+          <p class="mb-3">"{{ review.comment|default:"Great experience at Niru's Care!" }}"</p>
           <div class="d-flex align-items-center gap-2 mt-auto"><div class="avatar" style="width:40px;height:40px;">{{ review.patient.initials }}</div><div><div class="fw-bold small">{{ review.patient.display_name }}</div><div class="muted" style="font-size:.72rem;"><i class="bi bi-patch-check-fill text-primary"></i> Verified Patient</div></div></div>
         </div>
       </div>

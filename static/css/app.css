@@ -1,5 +1,5 @@
 /* ==========================================================================
-   DentaCare — design system v2
+   Niru's Care — design system v2
    Bold, sharp, real-world dental SaaS. Crisp corners, solid colors,
    dental motifs & animations. Per-role theming via CSS variables.
    ========================================================================== */
@@ -248,6 +248,199 @@
     .footer-clinic-logo {
         width: 155px;
         height: 65px;
+    }
+}
+/* =========================================
+   NIRU'S DENTISTRY BRANDING
+   ========================================= */
+
+.clinic-brand {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+.clinic-logo {
+    width: 220px;
+    height: 68px;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+}
+
+/* Footer logo */
+.footer-brand {
+    display: flex;
+    align-items: center;
+}
+
+.footer-clinic-logo {
+    width: 230px;
+    height: 75px;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+}
+
+
+/* =========================================
+   PROFESSIONAL NAVBAR
+   ========================================= */
+
+.public-nav {
+    min-height: 76px;
+    background: #ffffff;
+    border-bottom: 1px solid #e5edf3;
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
+    position: relative;
+    z-index: 1000;
+}
+
+.public-nav .container {
+    min-height: 76px;
+}
+
+.public-nav .nav-link-app {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-height: 48px;
+    padding: 10px 15px;
+    border-radius: 10px;
+    color: #334155;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.public-nav .nav-link-app:hover {
+    color: #087f8c;
+    background: #f0fbfc;
+}
+
+.public-nav .nav-link-app.active {
+    color: #ffffff;
+    background: linear-gradient(135deg, #087f8c, #12a8b5);
+    box-shadow: 0 7px 18px rgba(8, 127, 140, 0.22);
+}
+
+
+/* Login button */
+.public-nav .btn-ghost {
+    min-height: 46px;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+
+/* Main action button */
+.public-nav .btn-app {
+    min-height: 46px;
+    padding: 10px 19px;
+    border-radius: 10px;
+    font-weight: 600;
+    background: linear-gradient(135deg, #087f8c, #12a8b5);
+    border: none;
+    box-shadow: 0 7px 18px rgba(8, 127, 140, 0.20);
+}
+
+
+/* =========================================
+   MOBILE NAVBAR
+   ========================================= */
+
+@media (max-width: 991.98px) {
+
+    .public-nav {
+        min-height: 70px;
+    }
+
+    .public-nav .container {
+        min-height: 70px;
+    }
+
+    .clinic-logo {
+        width: 180px;
+        height: 58px;
+    }
+
+    .public-nav .navbar-collapse {
+        background: #ffffff;
+        padding: 15px;
+        margin-top: 10px;
+        border-radius: 14px;
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.10);
+        border: 1px solid #e5edf3;
+    }
+
+    .public-nav .nav-link-app {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .public-nav .btn-app,
+    .public-nav .btn-ghost {
+        width: 100%;
+        justify-content: center;
+        margin-left: 0 !important;
+        margin-top: 5px;
+    }
+}
+
+
+/* =========================================
+   SMALL MOBILE
+   ========================================= */
+
+@media (max-width: 575.98px) {
+
+    .clinic-logo {
+        width: 155px;
+        height: 52px;
+    }
+
+    .footer-clinic-logo {
+        width: 200px;
+        height: 65px;
+    }
+}
+/* =========================================
+   NIRU'S DENTISTRY - NAVBAR LOGO
+   ========================================= */
+
+.clinic-brand {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+.clinic-logo {
+    width: 220px;
+    height: 72px;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+    border: none;
+    outline: none;
+}
+
+/* Tablet */
+@media (max-width: 991px) {
+    .clinic-logo {
+        width: 190px;
+        height: 65px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 575px) {
+    .clinic-logo {
+        width: 165px;
+        height: 58px;
     }
 }
 :root {

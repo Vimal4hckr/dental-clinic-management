@@ -110,7 +110,7 @@ def symptom_triage(text):
 # ---------------------------------------------------------------------------
 CHATBOT_INTENTS = [
     (['hi', 'hello', 'hey', 'good morning', 'good evening'],
-     "Hello! I'm DentaBot 🦷 — your virtual dental assistant. Ask me about appointments, services, timings or prices."),
+     "Hello! I'm Niru's Dentistry's virtual dental assistant 🦷— your virtual dental assistant. Ask me about appointments, services, timings or prices."),
     (['appointment', 'book', 'booking', 'schedule'],
      "You can book an appointment from your dashboard → 'Book Appointment'. Choose a dentist, service, date and time. Would you like me to point you there?"),
     (['timing', 'time', 'open', 'hours', 'close'],
@@ -120,7 +120,7 @@ CHATBOT_INTENTS = [
     (['pain', 'hurt', 'ache', 'emergency'],
      "Sorry you're in pain! For severe pain, book an Emergency Consultation. You can also use the Symptom Checker for quick guidance."),
     (['location', 'address', 'where'],
-     "We're at DentaCare Clinic, Smile Street, Dental City. Parking is available on-site."),
+     "We're at Niru's Dentistry. For appointments, timings, services or emergencies, please call 9500015425. Parking is available on-site."),
     (['insurance', 'claim'],
      "We accept most major insurance providers and offer UPI, card and cash payments."),
     (['whiten', 'whitening', 'clean', 'braces', 'implant', 'root canal', 'filling'],

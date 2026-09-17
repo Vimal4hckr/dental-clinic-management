@@ -1,7 +1,7 @@
 """
 Django settings for dental_clinic project.
 
-DentaCare - Dental Clinic Management System
+Niru's Care - Dental Clinic Management System
 """
 
 from pathlib import Path
