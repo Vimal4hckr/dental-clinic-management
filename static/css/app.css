@@ -3,6 +3,253 @@
    Bold, sharp, real-world dental SaaS. Crisp corners, solid colors,
    dental motifs & animations. Per-role theming via CSS variables.
    ========================================================================== */
+
+   /* =========================
+   NIRU'S DENTISTRY LOGO
+   ========================= */
+
+.brand-logo {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.brand-logo img {
+    width: 190px;
+    height: auto;
+    display: block;
+    object-fit: contain;
+}
+
+.footer-logo img {
+    width: 180px;
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 5px;
+}
+
+/* Mobile */
+@media (max-width: 576px) {
+    .brand-logo img {
+        width: 150px;
+    }
+
+    .footer-logo img {
+        width: 150px;
+    }
+}
+/* =========================================================
+   NIRU'S DENTISTRY - PROFESSIONAL PUBLIC NAVBAR
+   ========================================================= */
+
+/* Navbar */
+.public-nav {
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    min-height: 76px;
+    position: relative;
+    z-index: 1000;
+}
+
+/* Main navbar container */
+.public-nav > .container {
+    min-height: 76px;
+}
+
+/* ---------------------------------------------------------
+   MAIN LOGO
+   --------------------------------------------------------- */
+
+.public-nav .clinic-logo {
+    width: 180px;
+    height: 68px;
+    object-fit: contain;
+    display: block;
+}
+
+/* Prevent logo link from expanding the navbar */
+.public-nav > .container > a:first-child {
+    height: 68px;
+    width: 190px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+/* ---------------------------------------------------------
+   NAVIGATION
+   --------------------------------------------------------- */
+
+.public-nav .navbar-collapse {
+    flex-grow: 1;
+}
+
+.public-nav .nav-link-app {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 10px 14px;
+    border-radius: 9px;
+    color: #334155;
+    font-weight: 600;
+    font-size: 15px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.public-nav .nav-link-app i {
+    font-size: 15px;
+}
+
+/* Hover */
+.public-nav .nav-link-app:hover {
+    background: #eff6ff;
+    color: #1677ff;
+}
+
+/* Active */
+.public-nav .nav-link-app.active {
+    background: #1677ff;
+    color: #ffffff;
+    box-shadow: 0 5px 14px rgba(22, 119, 255, 0.20);
+}
+
+/* ---------------------------------------------------------
+   LOGIN BUTTON
+   --------------------------------------------------------- */
+
+.public-nav .btn-ghost {
+    min-height: 46px;
+    padding: 10px 18px;
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+    color: #1677ff;
+    background: #ffffff;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.public-nav .btn-ghost:hover {
+    background: #eff6ff;
+    border-color: #1677ff;
+}
+
+/* ---------------------------------------------------------
+   DASHBOARD / SIGN UP
+   --------------------------------------------------------- */
+
+.public-nav .btn-app {
+    min-height: 46px;
+    padding: 10px 18px;
+    border-radius: 9px;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+/* ---------------------------------------------------------
+   MOBILE MENU BUTTON
+   --------------------------------------------------------- */
+
+.public-nav .navbar-toggler {
+    color: #0f172a;
+    padding: 6px 8px;
+}
+
+.public-nav .navbar-toggler:focus {
+    box-shadow: none;
+}
+
+
+/* =========================================================
+   FOOTER LOGO
+   ========================================================= */
+
+.footer-clinic-logo {
+    width: 180px;
+    height: 75px;
+    object-fit: contain;
+    display: block;
+}
+
+
+/* =========================================================
+   RESPONSIVE NAVBAR
+   ========================================================= */
+
+@media (max-width: 991px) {
+
+    .public-nav {
+        min-height: 70px;
+    }
+
+    .public-nav > .container {
+        min-height: 70px;
+    }
+
+    .public-nav > .container > a:first-child {
+        width: 165px;
+        height: 62px;
+    }
+
+    .public-nav .clinic-logo {
+        width: 155px;
+        height: 60px;
+    }
+
+    .public-nav .navbar-collapse {
+        background: #ffffff;
+        padding: 12px 0 16px;
+        border-top: 1px solid #e5e7eb;
+        margin-top: 6px;
+    }
+
+    .public-nav .nav-link-app {
+        width: 100%;
+        justify-content: flex-start;
+        padding: 11px 14px;
+    }
+
+    .public-nav .btn-app,
+    .public-nav .btn-ghost {
+        width: 100%;
+        margin-left: 0 !important;
+        margin-top: 5px;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 576px) {
+
+    .public-nav > .container > a:first-child {
+        width: 145px;
+        height: 58px;
+    }
+
+    .public-nav .clinic-logo {
+        width: 140px;
+        height: 55px;
+    }
+
+    .footer-clinic-logo {
+        width: 155px;
+        height: 65px;
+    }
+}
 :root {
   --primary: #0d6efd;
   --primary-dark: #0a58ca;
