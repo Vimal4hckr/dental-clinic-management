@@ -795,3 +795,359 @@ a { text-decoration: none; color: var(--primary); }
   .hide-sm { display:none !important; }
   .floating-tooth, .floating-badge { display:none; }
 }
+
+/* =========================================================
+   NIRU'S DENTISTRY — PROFESSIONAL FOOTER
+   ========================================================= */
+
+.clinic-footer {
+  background: #071b36;
+  color: #ffffff;
+  padding: 70px 0 0;
+  margin-top: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.clinic-footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    #087f8c,
+    #10a8b8,
+    #1686ff
+  );
+}
+
+.footer-logo-wrap {
+  display: inline-flex;
+  background: #ffffff;
+  padding: 10px 16px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  text-decoration: none;
+}
+
+.footer-clinic-logo {
+  width: 210px;
+  height: auto;
+  display: block;
+}
+
+.footer-description {
+  color: #b8c7d9;
+  font-size: 15px;
+  line-height: 1.8;
+  max-width: 390px;
+  margin: 0 0 24px;
+}
+
+.footer-heading {
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 22px;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.footer-heading::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 34px;
+  height: 3px;
+  border-radius: 10px;
+  background: #13a8b8;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.footer-links a {
+  color: #b8c7d9;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.25s ease;
+}
+
+.footer-links a:hover {
+  color: #ffffff;
+  transform: translateX(4px);
+}
+
+.footer-socials {
+  display: flex;
+  gap: 10px;
+}
+
+.footer-socials a {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.footer-socials a:hover {
+  background: #0b9eae;
+  border-color: #0b9eae;
+  transform: translateY(-3px);
+}
+
+.footer-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.footer-contact > a {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  color: #ffffff;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.footer-contact > a:hover {
+  transform: translateX(3px);
+}
+
+.footer-contact-icon {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(19, 168, 184, 0.14);
+  color: #42c7d3;
+  font-size: 17px;
+}
+
+.footer-contact small {
+  display: block;
+  color: #7f95ad;
+  font-size: 11px;
+  margin-bottom: 2px;
+}
+
+.footer-contact strong {
+  display: block;
+  color: #eaf2fa;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.footer-hours {
+  margin-top: 55px;
+  padding: 22px 25px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.hours-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ffffff;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.hours-title i {
+  color: #38bfca;
+  font-size: 19px;
+}
+
+.hours-list {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.hours-list span {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  color: #aebed0;
+  font-size: 12px;
+}
+
+.hours-list strong {
+  color: #ffffff;
+  font-size: 13px;
+}
+
+.hours-list .holiday strong,
+.hours-list .holiday {
+  color: #e7a7a7;
+}
+
+.footer-emergency {
+  margin-top: 22px;
+  padding: 20px 24px;
+  border-radius: 14px;
+  background: rgba(19, 168, 184, 0.10);
+  border: 1px solid rgba(19, 168, 184, 0.25);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.emergency-icon {
+  width: 45px;
+  height: 45px;
+  flex: 0 0 45px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(231, 167, 167, 0.12);
+  color: #f0aaaa;
+  font-size: 19px;
+}
+
+.emergency-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.emergency-content strong {
+  color: #ffffff;
+  font-size: 15px;
+}
+
+.emergency-content span {
+  color: #aebed0;
+  font-size: 13px;
+}
+
+.emergency-content a {
+  color: #48cbd4;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.emergency-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 17px;
+  border-radius: 9px;
+  background: #0b9eae;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.25s ease;
+}
+
+.emergency-button:hover {
+  background: #087f8c;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.footer-bottom {
+  margin-top: 45px;
+  padding: 20px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  color: #71859c;
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   RESPONSIVE FOOTER
+   ========================================================= */
+
+@media (max-width: 991px) {
+
+  .clinic-footer {
+    padding-top: 55px;
+  }
+
+  .footer-hours {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .hours-list {
+    justify-content: flex-start;
+  }
+
+}
+
+
+@media (max-width: 767px) {
+
+  .clinic-footer {
+    padding-top: 45px;
+  }
+
+  .footer-clinic-logo {
+    width: 190px;
+  }
+
+  .footer-hours {
+    padding: 18px;
+  }
+
+  .hours-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
+
+  .footer-emergency {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .emergency-content {
+    min-width: calc(100% - 65px);
+  }
+
+  .emergency-button {
+    margin-left: 60px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+}
